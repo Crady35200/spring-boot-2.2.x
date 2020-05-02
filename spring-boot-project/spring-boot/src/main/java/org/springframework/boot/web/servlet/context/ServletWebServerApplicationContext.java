@@ -137,7 +137,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 
 	@Override
 	public final void refresh() throws BeansException, IllegalStateException {
-		try {
+		try {//调用父类AbstractApplicationContext的刷新方法，并在onRefresh扩展方法中启动容器
 			super.refresh();
 		}
 		catch (RuntimeException ex) {
@@ -149,7 +149,7 @@ public class ServletWebServerApplicationContext extends GenericWebApplicationCon
 	@Override
 	protected void onRefresh() {
 		super.onRefresh();
-		try {
+		try {//创建并启动嵌入式容器(默认Tomcat容器)
 			createWebServer();
 		}
 		catch (Throwable ex) {

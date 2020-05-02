@@ -114,7 +114,7 @@ public class AutoConfigurationImportSelector implements DeferredImportSelector, 
 		if (!isEnabled(annotationMetadata)) {
 			return EMPTY_ENTRY;
 		}
-		//获取EnableAutoConfiguration的属性，也就是exclue和excludeName的内容
+		//获取EnableAutoConfiguration的属性，也就是exclude和excludeName的内容
 		AnnotationAttributes attributes = getAttributes(annotationMetadata);
 		//获取在META-INF/spring.factories中允许自动配置的类
 		List<String> configurations = getCandidateConfigurations(annotationMetadata, attributes);

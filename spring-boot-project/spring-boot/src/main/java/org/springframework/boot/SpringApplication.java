@@ -323,7 +323,7 @@ public class SpringApplication {
 					new Class[] { ConfigurableApplicationContext.class }, context);
 			//准备容器，注入启动类
 			prepareContext(context, environment, listeners, applicationArguments, printedBanner);
-			//刷新容器
+			//刷新容器加载对象(嵌入式tomcat也是在这里启动的)
 			refreshContext(context);
 			//刷新容器后的扩展接口
 			afterRefresh(context, applicationArguments);
@@ -354,9 +354,10 @@ public class SpringApplication {
 		// Create and configure the environment
 		//获取对应的ConfigurableEnvironment创建的是:StandardServletEnvironment
 		ConfigurableEnvironment environment = getOrCreateEnvironment();
+		//设置运行环境dev,test,product
 		configureEnvironment(environment, applicationArguments.getSourceArgs());
 		ConfigurationPropertySources.attach(environment);
-		//发布环境已准备事件
+		//执行环境已准备监听事件
 		listeners.environmentPrepared(environment);
 		bindToSpringApplication(environment);
 		if (!this.isCustomEnvironment) {
@@ -419,6 +420,7 @@ public class SpringApplication {
 	}
 
 	private void refreshContext(ConfigurableApplicationContext context) {
+		//刷新容器加载对象(嵌入式tomcat也是在这里启动的)
 		refresh(context);
 		if (this.registerShutdownHook) {
 			try {
@@ -504,6 +506,7 @@ public class SpringApplication {
 			environment.setConversionService((ConfigurableConversionService) conversionService);
 		}
 		configurePropertySources(environment, args);
+		//设置环境
 		configureProfiles(environment, args);
 	}
 
@@ -770,6 +773,8 @@ public class SpringApplication {
 	 */
 	protected void refresh(ApplicationContext applicationContext) {
 		Assert.isInstanceOf(AbstractApplicationContext.class, applicationContext);
+		//刷新容器加载对象(嵌入式tomcat也是在这里启动的),
+		// 调用父类ServletWebServerApplicationContext类的refresh()方法
 		((AbstractApplicationContext) applicationContext).refresh();
 	}
 
